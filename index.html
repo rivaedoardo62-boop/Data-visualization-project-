@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Italian Times: The Italian Stagnation</title>
+
+  <!-- Google Fonts:
+       - UnifrakturMaguntia → blackletter masthead (close to Engravers' Old English)
+       - Playfair Display Black → headlines (close to NYT's Cheltenham bold)
+       - Old Standard TT → body text (close to NYT's Imperial)
+       - Inter → UI / labels -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Old+Standard+TT:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    /* --- Reset --- */
+    *, *::before, *::after { box-sizing: border-box; }
+    body, h1, h2, h3, h4, p, figure, blockquote { margin: 0; }
+    img { max-width: 100%; display: block; }
+
+    /* --- Tokens --- */
+    :root {
+      --paper:    #f8f5ec;        /* warm off-white, like newsprint */
+      --ink:      #111111;
+      --ink-2:    #2a2a2a;
+      --muted:    #5a5a5a;
+      --rule:     #1a1a1a;
+      --rule-light: #c8c4b4;
+      --accent:   #8a1414;        /* dark red for kickers, like NYT section tags */
+
+      --f-master: 'UnifrakturMaguntia', 'Old English Text MT', 'Times New Roman', serif;
+      --f-display:'Playfair Display', 'Cheltenham', Georgia, serif;
+      --f-body:   'Old Standard TT', 'Imperial', Georgia, 'Times New Roman', serif;
+      --f-ui:     'Inter', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--f-body);
+      font-size: 17px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* ============================================================
+       MASTHEAD: top three-row newspaper flag
+       ============================================================ */
+    .masthead {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 24px 0;
+    }
+
+    .masthead-row {
+      display: grid;
+      grid-template-columns: 1fr 2.4fr 1fr;
+      align-items: end;
+      gap: 24px;
+      padding-bottom: 8px;
+    }
+
+    .flag-left,
+    .flag-right {
+      font-family: var(--f-body);
+      font-size: 12px;
+      line-height: 1.3;
+      color: var(--ink-2);
+    }
+
+    .flag-left {
+      border: 1px solid var(--ink);
+      padding: 10px 14px;
+      text-align: center;
+      font-style: italic;
+      max-width: 180px;
+      margin-left: 0;
+    }
+
+    .flag-right { text-align: right; }
+    .flag-right .late-edition {
+      font-family: var(--f-body);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+    }
+
+    .masthead-title {
+      font-family: var(--f-master);
+      font-weight: 400;
+      font-size: 78px;
+      line-height: 1;
+      text-align: center;
+      color: var(--ink);
+      letter-spacing: 0;
+      white-space: nowrap;
+    }
+
+    /* Info strip below the masthead (vol / date / price) */
+    .info-strip {
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      padding: 6px 0;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 24px;
+      font-family: var(--f-body);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      color: var(--ink-2);
+    }
+    .info-strip .center { text-align: center; text-transform: uppercase; }
+    .info-strip .right  { text-align: right; }
+
+    /* ============================================================
+       FRONT PAGE HEADLINE
+       ============================================================ */
+    .front {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 36px 24px 0;
+      text-align: center;
+    }
+
+    .front .headline {
+      font-family: var(--f-display);
+      font-weight: 900;
+      font-size: 92px;
+      line-height: 1;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 18px;
+    }
+
+    .front .subhead {
+      font-family: var(--f-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 1.2;
+      max-width: 900px;
+      margin: 0 auto 28px;
+      color: var(--ink);
+    }
+
+    .front .deck {
+      font-family: var(--f-body);
+      font-style: italic;
+      font-size: 17px;
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .horizontal-rule {
+      max-width: 1180px;
+      margin: 40px auto 0;
+      padding: 0 24px;
+    }
+    .horizontal-rule hr {
+      border: 0;
+      border-top: 2px solid var(--rule);
+      margin: 0;
+    }
+
+    /* ============================================================
+       ARTICLE: kicker, byline, body, columns
+       ============================================================ */
+    .article {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .kicker {
+      font-family: var(--f-display);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .byline {
+      font-family: var(--f-body);
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      margin-bottom: 36px;
+      letter-spacing: 0.03em;
+    }
+    .byline strong { font-weight: 700; color: var(--ink); }
+    .byline .sep   { margin: 0 10px; color: var(--rule-light); }
+
+    /* Body in 2 newspaper columns */
+    .body-columns {
+      column-count: 2;
+      column-gap: 36px;
+      column-rule: 1px solid var(--rule-light);
+      max-width: 980px;
+      margin: 0 auto;
+      font-size: 16px;
+      line-height: 1.55;
+    }
+
+    .body-columns p {
+      margin-bottom: 0.9em;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    /* Drop cap on the lead paragraph */
+    .body-columns p.lead::first-letter {
+      font-family: var(--f-display);
+      font-weight: 900;
+      font-size: 64px;
+      line-height: 0.85;
+      float: left;
+      padding: 6px 8px 0 0;
+      color: var(--ink);
+    }
+
+    /* Section heads inside the body */
+    .body-columns h2 {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: 22px;
+      line-height: 1.2;
+      margin: 22px 0 8px;
+      color: var(--ink);
+      break-after: avoid;
+    }
+
+    /* Section heads that span full width (e.g. above embedded vizzes) */
+    .section-h2-full {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-size: 30px;
+      line-height: 1.2;
+      max-width: 980px;
+      margin: 48px auto 14px;
+      color: var(--ink);
+      text-align: left;
+    }
+
+    /* Intro paragraph above an embedded viz, full width with column-text width */
+    .section-intro {
+      font-family: var(--f-body);
+      font-size: 17px;
+      line-height: 1.55;
+      max-width: 980px;
+      margin: 0 auto 24px;
+      color: var(--ink-2);
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    /* Pull quote */
+    .pullquote {
+      font-family: var(--f-display);
+      font-weight: 700;
+      font-style: italic;
+      font-size: 26px;
+      line-height: 1.3;
+      color: var(--ink);
+      border-top: 2px solid var(--rule);
+      border-bottom: 2px solid var(--rule);
+      padding: 22px 16px;
+      margin: 22px 0;
+      text-align: center;
+      break-inside: avoid;
+    }
+
+    /* ============================================================
+       FIGURE / CHART EMBED: full width, breaks the column flow
+       ============================================================ */
+    figure.viz {
+      max-width: 1180px;
+      margin: 40px auto;
+      padding: 0;
+    }
+    figure.viz iframe {
+      width: 100%;
+      min-height: 720px;
+      border: 0;
+      display: block;
+      background: var(--paper);
+    }
+    figure.viz iframe.viz-compact {
+      /* T1 line chart: chart fixed at 620px + 10px buffer = 630 */
+      min-height: 630px;
+    }
+    figure.viz iframe.viz-pictogram {
+      /* T4 pictogram: chart is fixed at 820px tall (Plotly height), buffer for any chrome */
+      min-height: 860px;
+    }
+    figure.viz iframe.viz-tall {
+      /* taller iframe for the T5 calculator (inputs + result + chart + footer stack) */
+      min-height: 940px;
+    }
+    figure.viz iframe.viz-tall-filter {
+      /* T3 coxcomb: chart (900px) + filter checkbox bar (~52px) + small buffer */
+      min-height: 980px;
+    }
+    figure.viz .figcaption-wrap {
+      max-width: 900px;
+      margin: 4px auto 0;
+      padding-top: 8px;
+      border-top: 1px solid var(--rule-light);
+    }
+    figure.viz figcaption {
+      font-family: var(--f-body);
+      font-size: 13px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.5;
+      text-align: center;
+    }
+    figure.viz figcaption strong {
+      font-weight: 700;
+      font-style: normal;
+      color: var(--ink);
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    .article-footer {
+      max-width: 980px;
+      margin: 60px auto 0;
+      padding-top: 24px;
+      border-top: 2px solid var(--rule);
+      font-family: var(--f-body);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .article-footer p { margin-bottom: 0.7em; }
+    .article-footer strong { color: var(--ink); font-weight: 700; }
+    .article-footer a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--rule-light); }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 920px) {
+      .masthead-title { font-size: 56px; }
+      .masthead-row { grid-template-columns: 1fr; gap: 14px; text-align: center; }
+      .flag-left, .flag-right { max-width: none; text-align: center; margin: 0 auto; }
+
+      .info-strip { grid-template-columns: 1fr; gap: 4px; text-align: center; }
+      .info-strip .right, .info-strip .center { text-align: center; }
+
+      .front .headline { font-size: 52px; }
+      .front .subhead  { font-size: 22px; }
+
+      .body-columns { column-count: 1; }
+      figure.viz iframe { min-height: 560px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       MASTHEAD
+       ============================================================ -->
+  <header class="masthead">
+    <div class="masthead-row">
+      <div class="flag-left">
+        &ldquo;Numbers Don&rsquo;t Lie.<br />Stories Do.&rdquo;
+      </div>
+
+      <h1 class="masthead-title">The Italian Times</h1>
+
+      <div class="flag-right">
+        <div class="late-edition">Late Edition</div>
+        <div>Today, May 12, 2026.<br />Mostly cloudy with chance of stagnation.</div>
+      </div>
+    </div>
+
+    <div class="info-strip">
+      <div class="left">VOL. CXXVI &middot;&middot;&middot; No. 1</div>
+      <div class="center">LUISS GUIDO CARLI, TUESDAY, MAY&nbsp;12,&nbsp;2026</div>
+      <div class="right">FREE</div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       FRONT-PAGE HEADLINE
+       ============================================================ -->
+  <section class="front">
+    <h2 class="headline">The Italian Stagnation</h2>
+    <p class="subhead">
+      Real Wages Have Stood Still While the Rest of Western Europe Has Moved On
+    </p>
+    <p class="deck">
+      Across Western Europe, real wages have grown by anywhere from 5 to more
+      than 60&nbsp;percent over the last three decades. In Italy, the figure
+      is barely&nbsp;3.
+    </p>
+  </section>
+
+  <div class="horizontal-rule"><hr /></div>
+
+  <!-- ============================================================
+       ARTICLE
+       ============================================================ -->
+  <article class="article">
+
+    <div class="kicker">An Investigation, Data Visualizations 2026</div>
+
+    <div class="byline">
+      By <strong>Filippo Nannucci</strong>
+      <span class="sep">&middot;</span>
+      <strong>Daniele Giovanardi</strong>
+      <span class="sep">&middot;</span>
+      <strong>Edoardo Riva</strong>
+      <span class="sep">&middot;</span>
+      Published May&nbsp;12,&nbsp;2026
+    </div>
+
+    <!-- Lead body, 2 columns -->
+    <div class="body-columns">
+      <p class="lead">
+        In 1995, the average Italian worker earned, in dollars adjusted for
+        purchasing power, slightly less than a German colleague and just a little
+        more than a Swedish one. Three decades later, the two northern peers have
+        pulled away by tens of percentage points, while the Italian wage in real
+        terms is essentially the same as it was thirty years ago. It is, by all
+        available measures, a singular case in Western Europe.
+      </p>
+
+      <p>
+        The figures come from the OECD&rsquo;s Average Annual Wages database,
+        which tracks compensation in constant U.S. dollars at purchasing-power
+        parity. The chart that opens this story is built from that series, with
+        each country indexed to its starting value. The red line is Italy. The
+        greys are its peers.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         FIGURE 1: embedded interactive Plotly chart
+         ============================================================ -->
+    <figure class="viz">
+      <iframe
+        src="viz/t1_italy_alone_in_europe.html"
+        class="viz-compact"
+        title="Real wages, Italy vs European peers, 1995–2024"
+        loading="lazy"
+      ></iframe>
+      <div class="figcaption-wrap">
+        <figcaption>
+          <strong>Figure&nbsp;1.</strong>&nbsp; Real wages, Italy and European peers,
+          1995&ndash;2024 (index, 1995 = 100).
+          Source: OECD <em>Average Annual Wages</em>, constant USD at purchasing-power parity.
+          Hover any line for country&ndash;year values; drag the slider below the chart to zoom in on a sub-period.
+        </figcaption>
+      </div>
+    </figure>
+
+    <!-- Continuation of the body in two columns -->
+    <div class="body-columns">
+
+      <h2>When the Divergence Began</h2>
+      <p>
+        The divergence is not gradual. Through the first decade, through
+        the dot-com bust, through the early-2000s slowdown, the Italian
+        line moves in step with Germany&rsquo;s, occasionally even ahead of it.
+        After 2008 it breaks. The Italian wage peaks in 2010 and then begins
+        falling. By 2024 it is essentially back where it started thirty years
+        ago, while Germany has gained roughly twenty index points, France
+        twenty-five, and Sweden more than sixty.
+      </p>
+
+      <div class="pullquote">
+        &ldquo;Italian wages are not just low. They are, on average,
+        the same as they were in 1995, while peers&rsquo; wages have
+        risen by up to sixty percent.&rdquo;
+      </div>
+
+    </div>
+    <!-- /body-columns closed before Figure 2 so the map can span full width -->
+
+    <!-- ============================================================
+         FIGURE 2: embedded interactive Tableau choropleth (T2)
+         ============================================================ -->
+    <h2 class="section-h2-full">A Wall of Red</h2>
+    <p class="section-intro">
+      Is the Italian stagnation a national fact or a southern one? When Italians
+      talk about the country&rsquo;s economic problems, the conversation almost
+      always lands in the same place: <em>il Mezzogiorno</em>. The South pulls
+      down the average; the North (Lombardia, Veneto, Emilia-Romagna)
+      keeps Italy on the European map. The popular picture is of a
+      country split in half: an industrial engine at the top, a slower
+      periphery at the bottom. If that picture is right, a regional map of
+      growth between 2000 and 2024 should reveal exactly that: green
+      at the top, red at the bottom.
+    </p>
+
+    <figure class="viz">
+      <div class='tableauPlaceholder' id='viz1778332035693' style='position: relative'>
+        <noscript>
+          <a href='#'>
+            <img alt='A Wall of Red. GDP per capita growth, 2000-2024. Twenty of Italy&#39;s twenty-one regions grew slower than the Euro area (EA20) average over the last quarter-century. Only Bolzano matches it.'
+                 src='https://public.tableau.com/static/images/8D/8DBSTFKQ9/1_rss.png'
+                 style='border: none' />
+          </a>
+        </noscript>
+        <object class='tableauViz' style='display:none;'>
+          <param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' />
+          <param name='embed_code_version' value='3' />
+          <param name='path' value='shared&#47;8DBSTFKQ9' />
+          <param name='toolbar' value='yes' />
+          <param name='static_image' value='https://public.tableau.com/static/images/8D/8DBSTFKQ9/1.png' />
+          <param name='animate_transition' value='yes' />
+          <param name='display_static_image' value='yes' />
+          <param name='display_spinner' value='yes' />
+          <param name='display_overlay' value='yes' />
+          <param name='display_count' value='yes' />
+          <param name='language' value='en-GB' />
+          <param name='filter' value='publish=yes' />
+        </object>
+      </div>
+      <script type='text/javascript'>
+        (function() {
+          var divElement = document.getElementById('viz1778332035693');
+          var vizElement = divElement.getElementsByTagName('object')[0];
+          vizElement.style.width = '100%';
+          vizElement.style.height = (divElement.offsetWidth * 0.75) + 'px';
+          var scriptElement = document.createElement('script');
+          scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+          vizElement.parentNode.insertBefore(scriptElement, vizElement);
+        })();
+      </script>
+      <div class="figcaption-wrap">
+        <figcaption>
+          <strong>Figure&nbsp;2.</strong>&nbsp; Real GDP per capita growth, 2000&ndash;2024, by NUTS region.
+          Each region is coloured by the percentage growth of its GDP per capita in PPS terms; red shows
+          regions that grew slower than the Euro area (EA20) average (+99&nbsp;% over the period), green
+          shows regions that grew faster. Source: Eurostat <em>nama_10r_2gdp</em> and <em>nama_10_pc</em>.
+          Hover any region for details.
+        </figcaption>
+      </div>
+    </figure>
+
+    <div class="body-columns">
+      <p>
+        It does not. Once the eye moves past the colour, the popular
+        north-south frame collapses entirely. The slowest Italian region
+        between 2000 and 2024 is not in the Mezzogiorno but in the centre:
+        Umbria, with growth of just 56 percent against the Eurozone&rsquo;s 99.
+        Lazio, Molise, Trento and Emilia-Romagna sit immediately behind it.
+        Lombardia, the engine of the Italian economy, has grown twenty-six
+        percentage points more slowly than the Euro area. The only region that
+        essentially matches the European pace is Bolzano, an alpine
+        outlier in the country&rsquo;s far north. The stagnation is, with that
+        lone exception, everywhere. And it is in places no Italian
+        narrative would have predicted.
+      </p>
+    </div>
+    <!-- /body-columns closed before Figure 3 so the Coxcomb chart can span full width -->
+
+    <!-- ============================================================
+         FIGURE 3 - embedded interactive Plotly Coxcomb (T3)
+         ============================================================ -->
+    <h2 class="section-h2-full">Why the Engine Stopped</h2>
+    <p class="section-intro">
+      &ldquo;<em>Si lavora di pi&ugrave; e si guadagna di meno</em>&rdquo;
+      (&ldquo;we work more and earn less&rdquo;), is one of the most quoted
+      lines of contemporary Italian self-criticism, heard at family dinners,
+      in newspaper editorials, on television. Its scientific cousin in policy
+      debate has a name: <em>nanismo</em>, the country&rsquo;s chronic firm
+      smallness. Italian firms, the argument runs, are too small to invest,
+      too small to specialise, too small to compete on global markets. But
+      the diagnosis bundles two distinct claims usually heard together: that
+      Italy has more small firms than its peers, and that Italian small firms
+      produce less than their European counterparts. Are both true,
+      or only one?
+    </p>
+
+    <figure class="viz">
+      <iframe src="viz/t3_italian_nanismo.html"
+              class="viz-tall-filter"
+              title="Italy is stuck in low-productivity micro-firms"
+              loading="lazy"></iframe>
+      <div class="figcaption-wrap">
+        <figcaption>
+          <strong>Figure&nbsp;3.</strong>&nbsp; Coxcomb (Florence Nightingale)
+          chart. Each of the four countries occupies a quadrant; within each,
+          five concentric rings stack outward from <em>micro</em> firms
+          (0&ndash;9 employees) at the centre to <em>very large</em> (250+)
+          at the rim. The radial thickness of each ring equals that country&rsquo;s
+          share of national employment in that firm-size class. Colour encodes
+          productivity on a 20&ndash;80&nbsp;k€/worker scale (red = low, green
+          = high). Source: Eurostat <em>sbs_sc_sca_r2</em>, 2020.
+          <strong>Click any country to zoom in</strong>; click again to reset.
+          Use the country checkboxes above the chart to compare a subset.
+        </figcaption>
+      </div>
+    </figure>
+
+    <div class="body-columns">
+      <p>
+        Both. Italian micro-firms (those with fewer than ten employees)
+        employ 42&nbsp;percent of the country&rsquo;s workforce, twice
+        the share of Germany (19&nbsp;percent) or France (23&nbsp;percent). And
+        those Italian micro-firms produce only 28&nbsp;thousand euros per
+        worker, against 45&nbsp;thousand in Germany and 46&nbsp;thousand in
+        France. The two effects compound: Italy is unusually concentrated in
+        the size class that produces the least, and that size class itself
+        produces less in Italy than abroad. The Coxcomb makes the doubling
+        visible at a glance: Italy&rsquo;s red core is both the deepest
+        red and the largest, while Germany&rsquo;s green outer rim, its
+        very-large firms producing 76&nbsp;thousand per worker, has no Italian
+        equivalent. The structural diagnosis is right.
+      </p>
+    </div>
+    <!-- /body-columns closed before Figure 4 so the pictogram can span full width -->
+
+    <!-- ============================================================
+         FIGURE 4: embedded interactive Plotly pictogram (T4)
+         ============================================================ -->
+    <h2 class="section-h2-full">Italy Is Frozen, but for Everyone?</h2>
+    <p class="section-intro">
+      So far we have looked at the country, the regions, the firms. The last
+      question is generational. The popular intuition in Italy is that the
+      young pay the price of the long stagnation, while older workers
+      (sheltered by tenure and collective contracts) hold on.
+      The chart below tests that. Each coin is one euro of real hourly wage;
+      press &#x25B6;&nbsp;to watch the decade unfold.
+    </p>
+
+    <figure class="viz">
+      <iframe src="viz/t4_pictogram.html"
+              class="viz-pictogram"
+              title="Italy is frozen, but for everyone? Real wages by age band, 2014-2023"
+              loading="lazy"></iframe>
+      <div class="figcaption-wrap">
+        <figcaption>
+          <strong>Figure&nbsp;4.</strong>&nbsp; Median gross hourly wage of
+          Italian dependent workers, in real 2023 euros (deflated using the
+          harmonised consumer price index, Eurostat&nbsp;<em>prc_hicp_aind</em>).
+          Three age bands (15&ndash;29 in red, 30&ndash;49 in mid grey, 50+
+          in ink black) shown for three featured years: 2014, 2021 and
+          2023. Each coin represents one euro of gross hourly wage. Source:
+          ISTAT <em>RACLI</em> (Rilevazione su Costo Lavoro e Retribuzioni),
+          dependent workers, all firm sizes, 2014&ndash;2023. Press
+          &#x25B6;&nbsp;to watch the decade unfold; use the dropdown to filter
+          by age band.
+        </figcaption>
+      </div>
+    </figure>
+
+    <div class="body-columns">
+      <p>
+        The intuition is wrong. Italian real hourly wages did decline for every
+        age band, but the band that lost the most was the oldest. Between 2014
+        and 2023, the under-thirty saw their median wage fall by 9.4&nbsp;percent,
+        the 30&ndash;49 band by 10.8&nbsp;percent, and the 50+ band by
+        12.8&nbsp;percent. The chart also exposes the timing: the 2014 and
+        2021 columns are nearly identical. Wages were essentially flat for
+        seven years, then collapsed in the two years that followed, as cumulative HICP inflation of 15&nbsp;percent went
+        unabsorbed by collective-bargaining adjustments. No Italian generation
+        got out cheap.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         FIGURE 5: White-hat / black-hat ethics pair (T6)
+         ============================================================ -->
+    <h2 class="section-h2-full">A Note on Honesty. The Same Data, Two Stories</h2>
+    <p class="section-intro">
+      Beyond region, firm size and age, there is a fifth lens often invoked
+      in the Italian wage debate: taxation. Workers are routinely told that
+      their take-home pay is small because the State takes too much. To
+      anchor that claim, here are two static figures of the same OECD
+      tax-wedge dataset, designed to push opposite editorial readings. The
+      first follows our usual standards. The second uses four subtle
+      manipulation levers (cherry-picked comparators, a non-standard
+      income level, a non-standard denominator, and a populist title) to spin the same numbers into a populist anti-State headline.
+      Both figures are mathematically defensible. Only one is honest.
+    </p>
+
+    <figure class="viz">
+      <img src="viz/t6_whitehat.png"
+           alt="White-hat: Italy's tax wedge in European context"
+           style="width: 100%; max-width: 900px; display: block; margin: 0 auto; border: 0;" />
+      <div class="figcaption-wrap">
+        <figcaption>
+          <strong>Figure&nbsp;5a (white hat).</strong>&nbsp; Total tax wedge
+          for a single worker without children at 100&nbsp;% of average wage,
+          2024, using the OECD canonical methodology, computed as
+          <em>(PIT + employee SSC + employer SSC)&nbsp;/&nbsp;(gross wage + employer SSC)</em>
+          and expressed as a percentage of total labour cost. All 18 European
+          OECD countries shown, sorted ascending; Italy highlighted in red,
+          European median (39.6&nbsp;%) marked with a dashed line. Source:
+          OECD Taxing Wages (<em>DSD_TAX_PIT@DF_PIT_AVMR</em>).
+        </figcaption>
+      </div>
+    </figure>
+
+    <div class="body-columns">
+      <p>
+        Italy sits at 47.0&nbsp;percent, fifth out of eighteen, in a tight
+        cluster with Belgium (52.4), Germany (47.9), France (47.1) and Austria
+        (47.1), the European welfare-state group. High, but not
+        anomalous. Now consider the same dataset, told differently.
+      </p>
+    </div>
+
+    <figure class="viz">
+      <img src="viz/t6_blackhat.png"
+           alt="Black-hat: Italy's tax wedge, populist framing"
+           style="width: 100%; max-width: 900px; display: block; margin: 0 auto; border: 0;" />
+      <div class="figcaption-wrap">
+        <figcaption>
+          <strong>Figure&nbsp;5b (black hat).</strong>&nbsp; The same
+          OECD dataset, manipulated four ways. <em>(1)</em> Twelve
+          comparator countries are shown, an apparently
+          representative European overview that silently excludes France
+          (78&nbsp;%), Belgium (74&nbsp;%), Sweden (65&nbsp;%) and Austria
+          (61&nbsp;%), four countries whose tax burden equals or exceeds
+          Italy's on this manipulated metric and would therefore break the
+          narrative. Including Germany, Finland, Spain and Portugal in the
+          selection lends credibility to the chart (a reader thinks "even
+          Germany is here, this must be a serious comparison") while
+          ensuring Italy retains an 11-point gap from the second-place
+          country.
+          <em>(2)</em> Income level switched from 100&nbsp;% AW to
+          167&nbsp;% AW (the highest-taxed bracket). <em>(3)</em> The bar
+          shows the sum of personal income tax + employee SSC + employer SSC
+          as a percentage of <em>gross wage</em>, rather than the OECD
+          canonical "tax wedge" used in Figure&nbsp;5a (which puts the same
+          numerator over total labour cost as the denominator and gives
+          Italy 47.0&nbsp;%, not 71&nbsp;%): the chart's axis label
+          still says "Tax wedge", silently substituting one denominator
+          for another.
+          <em>(4)</em> The title is in a register designed to read as
+          serious newsroom journalism (<em>"Italy's true tax burden on
+          workers"</em>) rather than tabloid populism; the word
+          <em>"true"</em> is the rhetorical hinge, implying the other
+          figures one might have seen are misleading. The source line is
+          methodologically vague (<em>"own elaboration on OECD Taxing
+          Wages data"</em>) so the data-transformation choices are not
+          disclosed. The colour palette, chart type and overall
+          layout are identical to Figure&nbsp;5a, so the manipulation has
+          to be detected in the data choices, not in the visual cues.
+        </figcaption>
+      </div>
+    </figure>
+
+    <div class="body-columns">
+      <p>
+        Both charts use the same OECD database. Both are mathematically
+        valid. The difference between &ldquo;Italy is high but in line with
+        peers&rdquo; and &ldquo;Italy taxes its workers more harshly than
+        anywhere comparable&rdquo; is the difference between four small
+        editorial choices (comparator selection, income bracket,
+        denominator, headline), none of which are obvious to a reader
+        skimming a newspaper page. The lesson is not that data lies. The
+        lesson is that data does whatever its author wants it to do.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         FIGURE 6: embedded D3.js calculator (T5)
+         ============================================================ -->
+    <h2 class="section-h2-full">What It Cost You, Personally</h2>
+    <p class="section-intro">
+      Numbers, as the previous pair shows, can be told in many ways. At the
+      end of the month, what matters is what your bank account actually
+      shows. This last visualization hands the keyboard to you: pick the
+      year you started working in Italy and a European country to compare
+      with. The calculator integrates the year-by-year real-wage gap into
+      one cumulative number, then translates it into something concrete
+      (cars, months of Milan rent, Vespas, weeks of vacation, or
+      pizzas).
+    </p>
+
+    <figure class="viz">
+      <iframe src="viz/t5_calculator.html"
+              class="viz-tall"
+              title="What if Italy had grown like…? Personal real-wage calculator"
+              loading="lazy"></iframe>
+      <div class="figcaption-wrap">
+        <figcaption>
+          <strong>Figure&nbsp;6.</strong>&nbsp; Personal real-wage calculator.
+          Cumulative gap = year-by-year sum of
+          <em>(salary in country X) &minus; (salary in Italy)</em> from the
+          chosen start year to 2024, with each trajectory anchored on the
+          user&rsquo;s baseline and propagated by the country&rsquo;s OECD
+          real-wage index (constant 2024 USD&nbsp;PPP). The salary box is
+          optional: leaving it blank uses ISTAT&rsquo;s full-time gross annual
+          wage (rounded to &euro;30&thinsp;000 in 2024) as a default,
+          back-cast to the user&rsquo;s start year using Italy&rsquo;s own
+          real-wage index. The five concrete-unit prices are 2024 euros, fixed
+          across years. The widget listens for clicks on Figure&nbsp;1:
+          selecting a country there auto-selects the same country here.
+          Sources: OECD Earnings Database
+          (<em>DSD_EARNINGS@AV_AN_WAGE</em>); ISTAT structural surveys for
+          the Italian baseline.
+        </figcaption>
+      </div>
+    </figure>
+
+    <div class="body-columns">
+      <p>
+        The numbers in this article are aggregates: nineteen index points
+        behind Germany, sixty behind Sweden, three percent of growth in
+        thirty years. The number on your screen is what those aggregates
+        mean for you. That, in the end, is the only translation that
+        matters.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
+    <footer class="article-footer">
+      <p>The Italian Times. Data Visualizations 2026.</p>
+      <p><strong>Filippo Nannucci</strong> &middot;
+         <strong>Daniele Giovanardi</strong> &middot;
+         <strong>Edoardo Riva</strong></p>
+    </footer>
+
+  </article>
+
+  <!-- ============================================================
+       T1 → T5 cross-chart linking (parent-side relay)
+       T1's iframe posts {event: 't5:set_country', iso3: 'DEU'} when a
+       country line is clicked. We catch it here and forward it to T5's
+       iframe, then smooth-scroll the page to T5 so the user sees the
+       updated calculator. T5 has the receiver coded inside its own JS.
+       ============================================================ -->
+  <script>
+  (function () {
+    function findIframe(needle) {
+      var iframes = document.getElementsByTagName('iframe');
+      for (var i = 0; i < iframes.length; i++) {
+        if (iframes[i].src && iframes[i].src.indexOf(needle) !== -1) return iframes[i];
+      }
+      return null;
+    }
+
+    window.addEventListener('message', function (e) {
+      if (!e.data || e.data.event !== 't5:set_country') return;
+      var t5 = findIframe('t5_calculator.html');
+      if (!t5 || !t5.contentWindow) return;
+      t5.contentWindow.postMessage(e.data, '*');
+      // Smooth-scroll so the user actually sees the updated calculator
+      try {
+        t5.scrollIntoView({behavior: 'smooth', block: 'start'});
+      } catch (_) { /* old browser fallback: do nothing */ }
+    });
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>What if Italy had grown like…?</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <!-- Inline data (works under file:// because <script src> is allowed; fetch isn't) -->
+  <script src="t5_calculator_data.js"></script>
+  <style>
+    /* ---------- Palette (locked in 02_viz_plan.md) ---------- */
+    :root {
+      --accent: #c44536;        /* editorial red — Italy */
+      --ink:    #1a1a1a;        /* body text + comparator */
+      --gray:   #666666;        /* secondary text */
+      --mid:    #8a8a8a;        /* tertiary */
+      --bg:     #f8f5ec;        /* warm newsprint, matches site --paper */
+      --grid:   #e0e0e0;        /* faint rules */
+      --soft:   #f1ece5;        /* card backgrounds */
+    }
+
+    /* ---------- Reset / base ---------- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); }
+    body {
+      font-family: 'EB Garamond', Georgia, 'Times New Roman', serif;
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 28px 32px 32px;
+      max-width: 880px;
+      margin: 0 auto;
+    }
+
+    /* ---------- Header ---------- */
+    h1 {
+      font-family: 'Playfair Display', 'Times New Roman', serif;
+      font-size: 30px;
+      font-weight: 700;
+      margin: 0 0 6px;
+      color: var(--ink);
+    }
+    .subtitle {
+      font-style: italic;
+      color: var(--gray);
+      font-size: 14px;
+      margin: 0 0 22px;
+    }
+
+    /* ---------- Input panel ---------- */
+    .inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 28px;
+      padding: 18px 20px;
+      background: var(--soft);
+      border-left: 3px solid var(--accent);
+      border-radius: 2px;
+      margin-bottom: 22px;
+    }
+    .input-group { display: flex; flex-direction: column; }
+    .input-group label {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .input-group .value-display {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 22px;
+      color: var(--ink);
+      margin-top: 4px;
+    }
+    .full-width { grid-column: 1 / -1; }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+    select, input[type="number"] {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 15px;
+      padding: 8px 10px;
+      border: 1px solid #d0d0d0;
+      border-radius: 3px;
+      background: white;
+      color: var(--ink);
+      width: 100%;
+    }
+    select:focus, input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+
+    /* ---------- Result block ---------- */
+    .result {
+      text-align: center;
+      padding: 28px 20px 18px;
+      border-top: 1px solid var(--grid);
+      border-bottom: 1px solid var(--grid);
+      margin: 8px 0 22px;
+    }
+    .big-number {
+      font-family: 'Playfair Display', 'Times New Roman', serif;
+      font-size: 72px;
+      font-weight: 800;
+      line-height: 1;
+      color: var(--accent);
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+    }
+    .headline {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 17px;
+      color: var(--ink);
+      max-width: 540px;
+      margin: 0 auto 4px;
+    }
+    .headline strong { color: var(--ink); font-weight: 700; }
+    .notice {
+      font-size: 12px;
+      color: var(--gray);
+      font-style: italic;
+      margin: 6px 0 0;
+      min-height: 18px;
+    }
+
+    /* ---------- Concrete unit selector + array ---------- */
+    .unit-block { margin: 18px 0 4px; }
+    .unit-selector-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      font-size: 14px;
+      color: var(--gray);
+    }
+    .unit-selector-row select { width: auto; min-width: 220px; font-size: 14px; padding: 5px 8px; }
+
+    .icon-array {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 8px 16px;
+      line-height: 1.65;
+      font-size: 22px;
+      letter-spacing: 1px;
+      word-spacing: 2px;
+      text-align: center;
+      min-height: 60px;
+    }
+    .unit-caption {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-style: italic;
+      color: var(--gray);
+      font-size: 13px;
+      margin: 8px 0 0;
+    }
+    .unit-caption strong {
+      color: var(--ink);
+      font-style: normal;
+      font-weight: 700;
+    }
+
+    /* ---------- Chart ---------- */
+    .chart-wrap {
+      margin: 24px 0 16px;
+      padding: 12px 8px 4px;
+      background: white;
+      border: 1px solid var(--grid);
+      border-radius: 2px;
+    }
+    .chart-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--ink);
+      text-align: center;
+      margin: 4px 0 10px;
+    }
+    svg { display: block; margin: 0 auto; }
+    .axis text { font-family: 'Inter', sans-serif; font-size: 10px; fill: var(--gray); }
+    .axis line, .axis path { stroke: var(--grid); }
+    .line-italy   { fill: none; stroke: var(--accent); stroke-width: 2.2; }
+    .line-comp    { fill: none; stroke: var(--ink);    stroke-width: 2.2; }
+    .area-gap     { fill: var(--accent); fill-opacity: 0.10; }
+    .end-label    { font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600; }
+
+    /* ---------- Footer ---------- */
+    footer {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 11px;
+      color: var(--gray);
+      text-align: center;
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+    footer a { color: var(--gray); }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 640px) {
+      .inputs { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+      .big-number { font-size: 52px; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>What if Italy had grown like…?</h1>
+  <p class="subtitle">
+    Pick the year you started working and a European comparator country.
+    The calculator integrates the year-by-year wage gap into a single cumulative number.
+  </p>
+
+  <!-- ============= INPUT PANEL ============= -->
+  <section class="inputs">
+    <div class="input-group">
+      <label for="year-slider">When did you start working in Italy?</label>
+      <input type="range" id="year-slider" min="1990" max="2024" value="2010" step="1">
+      <span class="value-display" id="year-display">2010</span>
+    </div>
+
+    <div class="input-group">
+      <label for="country-select">Compare with</label>
+      <select id="country-select"></select>
+    </div>
+
+    <div class="input-group full-width">
+      <label for="salary-input">Your annual gross salary in € (optional — default uses ISTAT median)</label>
+      <input type="number" id="salary-input" placeholder="30000" min="0" step="1000">
+    </div>
+  </section>
+
+  <!-- ============= RESULT ============= -->
+  <section class="result">
+    <div class="big-number" id="big-number">€—</div>
+    <p class="headline" id="headline">Cumulative real-wage gap.</p>
+    <p class="notice" id="start-notice">&nbsp;</p>
+
+    <div class="unit-block">
+      <div class="unit-selector-row">
+        <span>Visualize this as</span>
+        <select id="unit-select"></select>
+      </div>
+      <div class="icon-array" id="icon-array">—</div>
+      <p class="unit-caption" id="unit-caption">&nbsp;</p>
+    </div>
+  </section>
+
+  <!-- ============= CHART ============= -->
+  <div class="chart-wrap">
+    <div class="chart-title">Implied annual real salary, year by year</div>
+    <svg id="trajectory-chart" width="780" height="220" viewBox="0 0 780 220"></svg>
+  </div>
+
+  <footer>
+    Source: OECD Average Annual Wages, constant 2024 USD&nbsp;PPP. Default salary: ISTAT full-time gross annual wage,
+    rounded to €30 000 in 2024. All concrete-unit prices are 2024 euros, fixed.
+    <br>
+    The calculator listens to clicks on Figure&nbsp;1 (T1): selecting a country there auto-fills this comparator.
+  </footer>
+
+  <script>
+  /* =====================================================================
+   * MAIN LOGIC
+   * ===================================================================== */
+  // Data is inlined via t5_calculator_data.js → window.T5_DATA. A JSON file
+  // (t5_calculator_data.json) sits alongside for tooling that wants the raw
+  // bundle, but the widget itself reads the JS-wrapped global to be safe
+  // under the file:// protocol (where fetch is blocked by Chromium browsers).
+  const DATA_URL = 't5_calculator_data.json';
+  let DATA = null;
+
+  /* ---------- Compute the year-by-year & cumulative gap ---------- */
+  function computeGap(startYear, comparatorIso, baselineEurOverride) {
+    const italy = DATA.wage_indices.ITA;
+    const comp  = DATA.wage_indices[comparatorIso];
+
+    // Effective start respects countries with shorter coverage
+    const effectiveStart = Math.max(startYear, comp.first_year);
+    const lastYear = Math.min(italy.last_year, comp.last_year);
+
+    // Default baseline: implied Italian wage at the effective start year
+    const baselineEur = (baselineEurOverride != null && baselineEurOverride > 0)
+      ? baselineEurOverride
+      : DATA.italian_baseline_eur.series[effectiveStart];
+
+    const idxItStart = italy.series[effectiveStart];
+    const idxCpStart = comp.series[effectiveStart];
+
+    const trajectory = [];
+    let cum = 0;
+    for (let y = effectiveStart; y <= lastYear; y++) {
+      const idxIt = italy.series[y];
+      const idxCp = comp.series[y];
+      if (idxIt == null || idxCp == null) continue;
+      const salaryIt = baselineEur * (idxIt / idxItStart);
+      const salaryCp = baselineEur * (idxCp / idxCpStart);
+      const gapYear = salaryCp - salaryIt;
+      cum += gapYear;
+      trajectory.push({year: y, salaryIt, salaryCp, gapYear, gapCum: cum});
+    }
+    return {
+      effectiveStart, lastYear, baselineEur,
+      cumulativeGap: cum,
+      finalYearGap: trajectory.length ? trajectory[trajectory.length - 1].gapYear : 0,
+      trajectory,
+      countryName: comp.country,
+    };
+  }
+
+  /* ---------- Format euro values ---------- */
+  function fmtEur(value) {
+    const v = Math.round(value);
+    return '€' + v.toLocaleString('en-US');
+  }
+  function fmtSignedEur(value) {
+    if (value >= 0) return '+' + fmtEur(value);
+    return '−' + fmtEur(Math.abs(value));
+  }
+
+  /* ---------- Pick a "1 icon = N units" scale so the array stays readable ---------- */
+  function pickIconScale(count) {
+    if (count <= 60)    return 1;
+    if (count <= 600)   return 10;
+    if (count <= 6000)  return 100;
+    if (count <= 60000) return 1000;
+    return 10000;
+  }
+
+  /* ---------- Render the icon array ---------- */
+  function renderIconArray(unit, count) {
+    const wrap     = document.getElementById('icon-array');
+    const caption  = document.getElementById('unit-caption');
+
+    if (!isFinite(count) || count <= 0) {
+      wrap.textContent = '—';
+      caption.innerHTML = '&nbsp;';
+      return;
+    }
+
+    const scale     = pickIconScale(count);
+    const iconCount = Math.round(count / scale);
+    const totalInt  = Math.floor(count);
+    const totalStr  = totalInt.toLocaleString('en-US');
+
+    // Build the icon row (capped at 200 icons hard for safety)
+    const safeIconCount = Math.min(iconCount, 200);
+    wrap.textContent = unit.icon.repeat(safeIconCount);
+
+    if (scale === 1) {
+      caption.innerHTML =
+        '= <strong>' + totalStr + '</strong> ' + unit.label_plural;
+    } else {
+      caption.innerHTML =
+        'each ' + unit.icon + ' = ' + scale.toLocaleString('en-US') + ' ' + unit.label_plural +
+        ' &nbsp;·&nbsp; total: <strong>' + totalStr + '</strong>';
+    }
+  }
+
+  /* ---------- Render the D3 trajectory chart ---------- */
+  function renderChart(traj, comparatorName) {
+    const svg = d3.select('#trajectory-chart');
+    svg.selectAll('*').remove();
+
+    if (traj.length < 2) {
+      svg.append('text')
+         .attr('x', 390).attr('y', 110).attr('text-anchor', 'middle')
+         .attr('font-family', 'EB Garamond, serif')
+         .attr('fill', 'var(--gray)')
+         .text('Not enough data — pick a later start year.');
+      return;
+    }
+
+    const W = 780, H = 220;
+    const margin = {top: 14, right: 80, bottom: 28, left: 56};
+    const innerW = W - margin.left - margin.right;
+    const innerH = H - margin.top  - margin.bottom;
+
+    const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleLinear()
+      .domain(d3.extent(traj, d => d.year))
+      .range([0, innerW]);
+
+    const yMin = d3.min(traj, d => Math.min(d.salaryIt, d.salaryCp));
+    const yMax = d3.max(traj, d => Math.max(d.salaryIt, d.salaryCp));
+    const pad  = (yMax - yMin) * 0.12 || yMax * 0.05;
+    const y = d3.scaleLinear()
+      .domain([yMin - pad, yMax + pad])
+      .range([innerH, 0]);
+
+    // Gap area
+    const area = d3.area()
+      .x(d => x(d.year))
+      .y0(d => y(d.salaryIt))
+      .y1(d => y(d.salaryCp));
+    g.append('path').datum(traj).attr('d', area).attr('class', 'area-gap');
+
+    // Lines
+    const lineIt = d3.line().x(d => x(d.year)).y(d => y(d.salaryIt));
+    const lineCp = d3.line().x(d => x(d.year)).y(d => y(d.salaryCp));
+    g.append('path').datum(traj).attr('d', lineIt).attr('class', 'line-italy');
+    g.append('path').datum(traj).attr('d', lineCp).attr('class', 'line-comp');
+
+    // X axis (integer years, ~5-6 ticks)
+    g.append('g').attr('class', 'axis')
+      .attr('transform', `translate(0,${innerH})`)
+      .call(d3.axisBottom(x).ticks(6).tickFormat(d3.format('d')));
+
+    // Y axis
+    g.append('g').attr('class', 'axis')
+      .call(d3.axisLeft(y).ticks(4).tickFormat(d => '€' + Math.round(d/1000) + 'k'));
+
+    // End-of-line labels
+    const last = traj[traj.length - 1];
+    g.append('text').attr('class', 'end-label')
+      .attr('x', x(last.year) + 6).attr('y', y(last.salaryIt) + 3)
+      .attr('fill', 'var(--accent)').text('Italy');
+    g.append('text').attr('class', 'end-label')
+      .attr('x', x(last.year) + 6).attr('y', y(last.salaryCp) + 3)
+      .attr('fill', 'var(--ink)').text(comparatorName);
+  }
+
+  /* ---------- Populate dropdowns ---------- */
+  function populateCountries() {
+    const sel = document.getElementById('country-select');
+    // The dataset is already filtered at the CSV level (18 European
+    // OECD developed-economy comparators + OECD aggregate). The 8 post-Soviet
+    // OECD members were dropped during the data pipeline because their
+    // post-Soviet convergence dynamics are not editorially comparable with the
+    // Italian-exception narrative. See data/task_5/SOURCES.md.
+    // Here we just exclude Italy itself (you can't compare Italy with Italy)
+    // and the OECD aggregate (a global benchmark, not a single comparator).
+    const entries = Object.entries(DATA.wage_indices)
+      .filter(([iso]) => iso !== 'ITA' && iso !== 'OECD')
+      .map(([iso, info]) => ({iso, name: info.country, first: info.first_year}))
+      .sort((a, b) => a.name.localeCompare(b.name));
+    for (const e of entries) {
+      const o = document.createElement('option');
+      o.value = e.iso;
+      o.textContent = e.name;
+      if (e.iso === 'DEU') o.selected = true;
+      sel.appendChild(o);
+    }
+  }
+
+  function populateUnits() {
+    const sel = document.getElementById('unit-select');
+    for (const u of DATA.concrete_units) {
+      const o = document.createElement('option');
+      o.value = u.key;
+      o.textContent = u.icon + '  ' + u.label_plural;
+      if (u.key === 'pizza') o.selected = true;
+      sel.appendChild(o);
+    }
+  }
+
+  /* ---------- Main update ---------- */
+  function updateAll() {
+    if (!DATA) return;
+
+    const startYear  = parseInt(document.getElementById('year-slider').value, 10);
+    const country    = document.getElementById('country-select').value;
+    const salaryRaw  = document.getElementById('salary-input').value;
+    const unitKey    = document.getElementById('unit-select').value;
+
+    document.getElementById('year-display').textContent = startYear;
+
+    const baselineOverride = salaryRaw === '' ? null : parseFloat(salaryRaw);
+    const result = computeGap(startYear, country, baselineOverride);
+
+    // Big number
+    document.getElementById('big-number').textContent = fmtSignedEur(result.cumulativeGap);
+
+    // Headline
+    const direction = result.cumulativeGap >= 0 ? 'more' : 'less';
+    document.getElementById('headline').innerHTML =
+      'You would have earned <strong>' + fmtSignedEur(result.cumulativeGap) +
+      '</strong> ' + direction + ' working in <strong>' + result.countryName +
+      '</strong> from <strong>' + result.effectiveStart +
+      '</strong> to <strong>' + result.lastYear + '</strong>.';
+
+    // Effective-start notice (only if user-picked year was earlier than country coverage)
+    const noticeEl = document.getElementById('start-notice');
+    if (result.effectiveStart !== startYear) {
+      noticeEl.textContent =
+        result.countryName + "'s OECD wage series begins in " + result.effectiveStart +
+        ' — using that year as your effective baseline.';
+    } else {
+      noticeEl.innerHTML = '&nbsp;';
+    }
+
+    // Concrete-unit array
+    const unit = DATA.concrete_units.find(u => u.key === unitKey);
+    const count = result.cumulativeGap / unit.price_eur;
+    renderIconArray(unit, count);
+
+    // Chart
+    renderChart(result.trajectory, result.countryName);
+  }
+
+  /* ---------- postMessage hook (from T1) ---------- */
+  window.addEventListener('message', function (e) {
+    if (e.data && e.data.event === 't5:set_country' && typeof e.data.iso3 === 'string') {
+      const sel = document.getElementById('country-select');
+      const target = e.data.iso3.toUpperCase();
+      if ([...sel.options].some(o => o.value === target)) {
+        sel.value = target;
+        updateAll();
+      }
+    }
+  });
+
+  /* ---------- Bootstrap ---------- */
+  function bootstrap(d) {
+    DATA = d;
+    populateCountries();
+    populateUnits();
+
+    // Wire events
+    ['year-slider', 'country-select', 'salary-input', 'unit-select'].forEach(id => {
+      const el = document.getElementById(id);
+      el.addEventListener('input', updateAll);
+      el.addEventListener('change', updateAll);
+    });
+
+    updateAll();
+  }
+
+  if (window.T5_DATA) {
+    // Preferred path — data inlined via <script src="t5_calculator_data.js">
+    bootstrap(window.T5_DATA);
+  } else {
+    // Fallback for http(s) servers where fetch works
+    fetch(DATA_URL)
+      .then(r => r.json())
+      .then(bootstrap)
+      .catch(err => {
+        document.getElementById('big-number').textContent = '⚠';
+        document.getElementById('headline').textContent =
+          'Could not load calculator data — ' + err.message +
+          '. If you opened the file directly, make sure t5_calculator_data.js is in the same folder.';
+      });
+  }
+  </script>
+
+</body>
+</html>

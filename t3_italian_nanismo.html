@@ -1,0 +1,212 @@
+<html>
+<head><meta charset="utf-8" /></head>
+<style>
+  html, body { margin: 0; padding: 0; }
+  .plotly-graph-div { margin: 0 auto !important; }
+</style>
+
+<body>
+<style>
+.t3-filter {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: #1a1a1a;
+    padding: 14px 24px 8px 24px;
+    background: #f8f5ec;
+    border-bottom: 1px solid #ececec;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 4px;
+}
+.t3-filter-label {
+    font-weight: 600;
+    margin-right: 14px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+}
+.t3-filter label {
+    margin-right: 14px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    color: #1a1a1a;
+}
+.t3-filter input[type=checkbox] {
+    margin-right: 5px;
+    cursor: pointer;
+    accent-color: #1a3a5c;
+    transform: translateY(1px);
+}
+.t3-filter button {
+    margin-left: auto;
+    padding: 4px 12px;
+    font-size: 11px;
+    background: transparent;
+    border: 1px solid #d0d0d0;
+    border-radius: 4px;
+    color: #666;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.t3-filter button:hover { background: #1a3a5c; color: #fff; border-color: #1a3a5c; }
+</style>
+
+<div class="t3-filter">
+    <span class="t3-filter-label">Show countries:</span>
+    <label><input type="checkbox" data-country="0" checked> Italy</label>
+    <label><input type="checkbox" data-country="1" checked> Germany</label>
+    <label><input type="checkbox" data-country="2" checked> France</label>
+    <label><input type="checkbox" data-country="3" checked> Spain</label>
+    <button id="t3-reset">Reset all</button>
+</div>
+
+
+    <div>                        <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.5.0.min.js" integrity="sha256-fHbNLP+GlIXN+efbQec78UkemUz3NJp7UmfGxC1tNxs=" crossorigin="anonymous"></script>                <div id="605d1aa9-0663-4c5f-8c11-a99f3fc9223d" class="plotly-graph-div" style="height:900px; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("605d1aa9-0663-4c5f-8c11-a99f3fc9223d")) {                    Plotly.newPlot(                        "605d1aa9-0663-4c5f-8c11-a99f3fc9223d",                        [{"base":[0.0,25.0,67.45960338983005,77.93138339121663,87.52477623444685,100.80802942426341],"hoverinfo":"text","hovertext":["\u003cb\u003eItaly\u003c\u002fb\u003e\u003cbr\u003eClick to focus on this country.\u003cbr\u003eClick again to reset to all four.","\u003cb\u003eItaly\u003c\u002fb\u003e · MICRO (0-9 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e42%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e27.6 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eItaly\u003c\u002fb\u003e · SMALL (10-19 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e10%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e41.2 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eItaly\u003c\u002fb\u003e · MEDIUM (20-49 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e10%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e51.2 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eItaly\u003c\u002fb\u003e · LARGE (50-249 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e13%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e64.1 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eItaly\u003c\u002fb\u003e · V. LARGE (GE250 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e24%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e69.9 k€\u002fworker\u003c\u002fb\u003e"],"marker":{"color":["#e8e2d4","rgb(185,34,34)","rgb(243,120,54)","rgb(228,242,193)","rgb(57,186,104)","rgb(21,150,69)"],"line":{"color":"#f8f5ec","width":1.5}},"name":"Italy","r":[25.0,42.45960338983005,10.47178000138657,9.593392843230216,13.283253189816563,24.191970575736597],"showlegend":false,"theta":[45,45,45,45,45,45],"width":[90,90,90,90,90,90],"type":"barpolar"},{"base":[0.0,25.0,43.90293427493257,53.750386500119944,65.08435386354014,81.94767179123353],"hoverinfo":"text","hovertext":["\u003cb\u003eGermany\u003c\u002fb\u003e\u003cbr\u003eClick to focus on this country.\u003cbr\u003eClick again to reset to all four.","\u003cb\u003eGermany\u003c\u002fb\u003e · MICRO (0-9 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e19%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e44.6 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eGermany\u003c\u002fb\u003e · SMALL (10-19 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e10%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e44.6 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eGermany\u003c\u002fb\u003e · MEDIUM (20-49 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e11%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e53.0 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eGermany\u003c\u002fb\u003e · LARGE (50-249 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e17%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e60.3 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eGermany\u003c\u002fb\u003e · V. LARGE (GE250 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e43%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e76.2 k€\u002fworker\u003c\u002fb\u003e"],"marker":{"color":["#e8e2d4","rgb(251,153,70)","rgb(251,153,70)","rgb(195,241,185)","rgb(94,212,137)","rgb(20,108,54)"],"line":{"color":"#f8f5ec","width":1.5}},"name":"Germany","r":[25.0,18.90293427493257,9.847452225187373,11.333967363420202,16.863317927693387,43.052321413159966],"showlegend":false,"theta":[135,135,135,135,135,135],"width":[90,90,90,90,90,90],"type":"barpolar"},{"base":[0.0,25.0,48.110520308500966,55.40214058773897,63.82160748446881,76.7220892115637],"hoverinfo":"text","hovertext":["\u003cb\u003eFrance\u003c\u002fb\u003e\u003cbr\u003eClick to focus on this country.\u003cbr\u003eClick again to reset to all four.","\u003cb\u003eFrance\u003c\u002fb\u003e · MICRO (0-9 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e23%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e46.1 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eFrance\u003c\u002fb\u003e · SMALL (10-19 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e7%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e49.0 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eFrance\u003c\u002fb\u003e · MEDIUM (20-49 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e8%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e53.3 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eFrance\u003c\u002fb\u003e · LARGE (50-249 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e13%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e59.3 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eFrance\u003c\u002fb\u003e · V. LARGE (GE250 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e48%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e69.0 k€\u002fworker\u003c\u002fb\u003e"],"marker":{"color":["#e8e2d4","rgb(252,180,109)","rgb(253,225,174)","rgb(185,240,183)","rgb(103,218,145)","rgb(21,155,71)"],"line":{"color":"#f8f5ec","width":1.5}},"name":"France","r":[25.0,23.110520308500963,7.291620279238001,8.419466896729835,12.900481727094895,48.27791078843631],"showlegend":false,"theta":[225,225,225,225,225,225],"width":[90,90,90,90,90,90],"type":"barpolar"},{"base":[0.0,25.0,60.4455609687159,69.35189634869066,79.66335130579304,92.76062544543467],"hoverinfo":"text","hovertext":["\u003cb\u003eSpain\u003c\u002fb\u003e\u003cbr\u003eClick to focus on this country.\u003cbr\u003eClick again to reset to all four.","\u003cb\u003eSpain\u003c\u002fb\u003e · MICRO (0-9 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e35%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e25.5 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eSpain\u003c\u002fb\u003e · SMALL (10-19 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e9%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e35.7 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eSpain\u003c\u002fb\u003e · MEDIUM (20-49 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e10%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e41.4 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eSpain\u003c\u002fb\u003e · LARGE (50-249 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e13%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e49.9 k€\u002fworker\u003c\u002fb\u003e","\u003cb\u003eSpain\u003c\u002fb\u003e · V. LARGE (GE250 employees)\u003cbr\u003eShare of national employment: \u003cb\u003e32%\u003c\u002fb\u003e\u003cbr\u003eProductivity: \u003cb\u003e51.7 k€\u002fworker\u003c\u002fb\u003e"],"marker":{"color":["#e8e2d4","rgb(168,33,33)","rgb(229,69,44)","rgb(244,122,55)","rgb(253,241,196)","rgb(218,241,191)"],"line":{"color":"#f8f5ec","width":1.5}},"name":"Spain","r":[25.0,35.4455609687159,8.90633537997476,10.311454957102383,13.097274139641632,32.239382548009424],"showlegend":false,"theta":[315,315,315,315,315,315],"width":[90,90,90,90,90,90],"type":"barpolar"},{"hoverinfo":"skip","mode":"text","name":"size-labels-Italy","r":[46.229801694915025,72.69549339052334,82.72807981283174,94.16640282935512,112.90401471213171],"showlegend":false,"text":["\u003cb\u003eMICRO\u003c\u002fb\u003e\u003cbr\u003e42% · 28 k€","\u003cb\u003eSMALL\u003c\u002fb\u003e\u003cbr\u003e10% · 41 k€","\u003cb\u003eMEDIUM\u003c\u002fb\u003e\u003cbr\u003e10% · 51 k€","\u003cb\u003eLARGE\u003c\u002fb\u003e\u003cbr\u003e13% · 64 k€","\u003cb\u003eV. LARGE\u003c\u002fb\u003e\u003cbr\u003e24% · 70 k€"],"textfont":{"color":["#ffffff","#1a1a1a","#1a1a1a","#1a1a1a","#ffffff"],"family":"Inter, sans-serif","size":11},"theta":[45,23,67,33,57],"type":"scatterpolar"},{"hoverinfo":"skip","mode":"text","name":"size-labels-Germany","r":[34.45146713746628,48.82666038752625,59.417370181830044,73.51601282738685,103.47383249781352],"showlegend":false,"text":["\u003cb\u003eMICRO\u003c\u002fb\u003e\u003cbr\u003e19% · 45 k€","\u003cb\u003eSMALL\u003c\u002fb\u003e\u003cbr\u003e10% · 45 k€","\u003cb\u003eMEDIUM\u003c\u002fb\u003e\u003cbr\u003e11% · 53 k€","\u003cb\u003eLARGE\u003c\u002fb\u003e\u003cbr\u003e17% · 60 k€","\u003cb\u003eV. LARGE\u003c\u002fb\u003e\u003cbr\u003e43% · 76 k€"],"textfont":{"color":["#1a1a1a","#1a1a1a","#1a1a1a","#1a1a1a","#ffffff"],"family":"Inter, sans-serif","size":11},"theta":[135,113,157,123,147],"type":"scatterpolar"},{"hoverinfo":"skip","mode":"text","name":"size-labels-France","r":[36.55526015425048,51.75633044811997,59.611874036103885,70.27184834801625,100.86104460578186],"showlegend":false,"text":["\u003cb\u003eMICRO\u003c\u002fb\u003e\u003cbr\u003e23% · 46 k€","\u003cb\u003eSMALL\u003c\u002fb\u003e\u003cbr\u003e7% · 49 k€","\u003cb\u003eMEDIUM\u003c\u002fb\u003e\u003cbr\u003e8% · 53 k€","\u003cb\u003eLARGE\u003c\u002fb\u003e\u003cbr\u003e13% · 59 k€","\u003cb\u003eV. LARGE\u003c\u002fb\u003e\u003cbr\u003e48% · 69 k€"],"textfont":{"color":["#1a1a1a","#1a1a1a","#1a1a1a","#1a1a1a","#ffffff"],"family":"Inter, sans-serif","size":11},"theta":[225,203,247,213,237],"type":"scatterpolar"},{"hoverinfo":"skip","mode":"text","name":"size-labels-Spain","r":[42.722780484357955,64.89872865870328,74.50762382724184,86.21198837561386,108.88031671943938],"showlegend":false,"text":["\u003cb\u003eMICRO\u003c\u002fb\u003e\u003cbr\u003e35% · 26 k€","\u003cb\u003eSMALL\u003c\u002fb\u003e\u003cbr\u003e9% · 36 k€","\u003cb\u003eMEDIUM\u003c\u002fb\u003e\u003cbr\u003e10% · 41 k€","\u003cb\u003eLARGE\u003c\u002fb\u003e\u003cbr\u003e13% · 50 k€","\u003cb\u003eV. LARGE\u003c\u002fb\u003e\u003cbr\u003e32% · 52 k€"],"textfont":{"color":["#ffffff","#1a1a1a","#1a1a1a","#1a1a1a","#1a1a1a"],"family":"Inter, sans-serif","size":11},"theta":[315,293,337,303,327],"type":"scatterpolar"},{"hoverinfo":"skip","mode":"text","name":"iso-Italy","r":[12.5],"showlegend":false,"text":["\u003cb\u003eITA\u003c\u002fb\u003e"],"textfont":{"color":"#1a1a1a","family":"Playfair Display, serif","size":18},"theta":[45],"type":"scatterpolar"},{"hoverinfo":"skip","mode":"text","name":"iso-Germany","r":[12.5],"showlegend":false,"text":["\u003cb\u003eDEU\u003c\u002fb\u003e"],"textfont":{"color":"#1a1a1a","family":"Playfair Display, serif","size":18},"theta":[135],"type":"scatterpolar"},{"hoverinfo":"skip","mode":"text","name":"iso-France","r":[12.5],"showlegend":false,"text":["\u003cb\u003eFRA\u003c\u002fb\u003e"],"textfont":{"color":"#1a1a1a","family":"Playfair Display, serif","size":18},"theta":[225],"type":"scatterpolar"},{"hoverinfo":"skip","mode":"text","name":"iso-Spain","r":[12.5],"showlegend":false,"text":["\u003cb\u003eESP\u003c\u002fb\u003e"],"textfont":{"color":"#1a1a1a","family":"Playfair Display, serif","size":18},"theta":[315],"type":"scatterpolar"},{"hoverinfo":"skip","marker":{"cmax":80,"cmin":20,"color":[50],"colorbar":{"len":0.55,"thickness":14,"tickfont":{"color":"#666","family":"EB Garamond, serif","size":10},"ticktext":["20","35","50\u003cbr\u003e\u003ci\u003eEU avg\u003c\u002fi\u003e","65","80"],"tickvals":[20,35,50,65,80],"title":{"font":{"color":"#1a1a1a","family":"Inter, sans-serif","size":11},"side":"top","text":"\u003cb\u003eProductivity\u003c\u002fb\u003e\u003cbr\u003e\u003ci\u003ek€\u002fworker\u003c\u002fi\u003e"},"x":1.02,"y":0.5,"yanchor":"middle"},"colorscale":[[0.0,"#7f1d1d"],[0.2,"#dc2626"],[0.4,"#fb923c"],[0.5,"#fef3c7"],[0.6,"#86efac"],[0.8,"#16a34a"],[1.0,"#14532d"]],"opacity":0,"showscale":true},"mode":"markers","name":"colorbar","r":[null],"showlegend":false,"theta":[null],"type":"scatterpolar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"polar":{"radialaxis":{"range":[0,125.0],"visible":false},"angularaxis":{"visible":false,"rotation":90,"direction":"counterclockwise"},"bgcolor":"#f8f5ec"},"title":{"font":{"family":"Playfair Display, serif","size":20,"color":"#1a1a1a"},"text":"\u003cb\u003eItalian \u003ci\u003enanismo\u003c\u002fi\u003e: a workforce stuck in low-productivity micro-firms\u003c\u002fb\u003e\u003cbr\u003e\u003cspan style='font-family:EB Garamond,serif;font-style:italic;font-size:13px;color:#666;'\u003eEach country occupies one quadrant. Within each quadrant, five concentric rings stack outward from the centre &mdash; \u003ci\u003emicro\u003c\u002fi\u003e to \u003ci\u003every large\u003c\u002fi\u003e. \u003cb\u003eClick any country to zoom in\u003c\u002fb\u003e; click again to reset.\u003c\u002fspan\u003e","x":0.0,"y":0.97,"xanchor":"left"},"margin":{"l":20,"r":140,"t":110,"b":110},"hoverlabel":{"font":{"family":"Inter, sans-serif","size":12,"color":"white"},"bgcolor":"#1a3a5c","bordercolor":"#1a3a5c"},"paper_bgcolor":"#f8f5ec","plot_bgcolor":"#f8f5ec","showlegend":false,"height":900,"annotations":[{"align":"left","font":{"family":"Inter, sans-serif"},"showarrow":false,"text":"\u003cb style='color:#c44536;font-size:20px;'\u003e42%\u003c\u002fb\u003e\u003cspan style='font-size:13px;color:#1a1a1a;'\u003e of Italy's workforce works in micro-firms that produce only \u003cb\u003e28 k€\u002fworker\u003c\u002fb\u003e — barely 60% of what equivalent German micro-firms produce.\u003c\u002fspan\u003e","x":0.0,"xanchor":"left","xref":"paper","y":-0.06,"yanchor":"top","yref":"paper"},{"align":"left","font":{"color":"#888","family":"EB Garamond, serif","size":10},"showarrow":false,"text":"Source: Eurostat — Structural Business Statistics (\u003ci\u003esbs_sc_sca_r2\u003c\u002fi\u003e), 2020. Whole non-financial business economy (NACE B-N excl. K). Country labels: \u003cb\u003eITA\u003c\u002fb\u003e = Italy, \u003cb\u003eDEU\u003c\u002fb\u003e = Germany, \u003cb\u003eFRA\u003c\u002fb\u003e = France, \u003cb\u003eESP\u003c\u002fb\u003e = Spain.","x":0.0,"xanchor":"left","xref":"paper","y":-0.13,"yanchor":"top","yref":"paper"}]},                        {"displayModeBar": false, "responsive": true}                    )                };            </script>        </div>
+<script>
+(function () {
+    function attach() {
+        var gd = document.querySelector('.js-plotly-plot, .plotly-graph-div');
+        if (!gd || typeof gd.on !== 'function' || !window.Plotly) return setTimeout(attach, 80);
+
+        var COUNTRY_TRACES    = [0, 1, 2, 3];
+        var SIZE_LABEL_TRACES = [4, 5, 6, 7];
+        var ISO_LABEL_TRACES  = [8, 9, 10, 11];
+        // Size-class angular offsets (degrees) for a 90°-wide quadrant.
+        // Order matches size_order = ["0-9","10-19","20-49","50-249","GE250"].
+        // Same values used in cell 17's SIZE_LABEL_OFFSET dict.
+        var ORIG_OFFSETS = [0, -22, 22, -12, 12];
+        var ORIG_WIDTH   = 90;
+
+        var state = {
+            filterSet: new Set([0, 1, 2, 3]),
+            focused:   null,
+        };
+
+        function computePositions() {
+            // Returns { visible: [idx,...], widthPer, thetaFor: {idx: theta} }.
+            if (state.focused !== null) {
+                var pos = {};
+                pos[state.focused] = 180;
+                return { visible: [state.focused], widthPer: 360, thetaFor: pos };
+            }
+            var vis = COUNTRY_TRACES.filter(function (i) { return state.filterSet.has(i); });
+            if (vis.length === 0) return null;
+            var N = vis.length;
+            var w = 360 / N;
+            var thetaFor = {};
+            for (var i = 0; i < N; i++) {
+                thetaFor[vis[i]] = (w / 2 + i * w) % 360;
+            }
+            return { visible: vis, widthPer: w, thetaFor: thetaFor };
+        }
+
+        function applyState() {
+            var p = computePositions();
+            if (!p) return;
+            var visible = p.visible, widthPer = p.widthPer, thetaFor = p.thetaFor;
+            var scale = widthPer / ORIG_WIDTH;
+            var scaledOffsets = ORIG_OFFSETS.map(function (o) { return o * scale; });
+
+            // ---- Country bars: each trace has 6 theta/width values (1 inner + 5 size classes) ----
+            var visArr   = [false, false, false, false];
+            var widthArr = [null,  null,  null,  null];
+            var thetaArr = [null,  null,  null,  null];
+            visible.forEach(function (idx) {
+                visArr[idx]   = true;
+                widthArr[idx] = [widthPer, widthPer, widthPer, widthPer, widthPer, widthPer];
+                var t = thetaFor[idx];
+                thetaArr[idx] = [t, t, t, t, t, t];
+            });
+            for (var j = 0; j < 4; j++) {
+                if (widthArr[j] === null) widthArr[j] = [90, 90, 90, 90, 90, 90];
+                if (thetaArr[j] === null) thetaArr[j] = [0, 0, 0, 0, 0, 0];
+            }
+            Plotly.restyle(gd, {
+                visible: visArr, width: widthArr, theta: thetaArr,
+            }, COUNTRY_TRACES);
+
+            // ---- Size-class label traces: each has 5 thetas (one per size class) ----
+            var labelVisArr   = [false, false, false, false];
+            var labelThetaArr = [null,  null,  null,  null];
+            visible.forEach(function (idx) {
+                labelVisArr[idx] = true;
+                var c = thetaFor[idx];
+                labelThetaArr[idx] = scaledOffsets.map(function (o) { return c + o; });
+            });
+            for (var k = 0; k < 4; k++) {
+                if (labelThetaArr[k] === null) labelThetaArr[k] = [0, 0, 0, 0, 0];
+            }
+            Plotly.restyle(gd, {
+                visible: labelVisArr, theta: labelThetaArr,
+            }, SIZE_LABEL_TRACES);
+
+            // ---- ISO label traces: each has 1 theta = country centre ----
+            var isoVisArr   = [false, false, false, false];
+            var isoThetaArr = [null,  null,  null,  null];
+            visible.forEach(function (idx) {
+                isoVisArr[idx]   = true;
+                isoThetaArr[idx] = [thetaFor[idx]];
+            });
+            for (var m = 0; m < 4; m++) {
+                if (isoThetaArr[m] === null) isoThetaArr[m] = [0];
+            }
+            Plotly.restyle(gd, {
+                visible: isoVisArr, theta: isoThetaArr,
+            }, ISO_LABEL_TRACES);
+        }
+
+        // ---- Click on a country to drill-zoom; click again to reset ----
+        gd.on('plotly_click', function (data) {
+            if (!data || !data.points || !data.points.length) return;
+            var clicked = data.points[0].curveNumber;
+            if (COUNTRY_TRACES.indexOf(clicked) === -1) return;
+            if (!state.filterSet.has(clicked)) return;
+            state.focused = (state.focused === clicked) ? null : clicked;
+            applyState();
+        });
+
+        // ---- Checkbox handler: toggle filter set ----
+        document.querySelectorAll('.t3-filter input[type=checkbox]').forEach(function (cb) {
+            cb.addEventListener('change', function () {
+                var idx = parseInt(cb.dataset.country, 10);
+                if (cb.checked) {
+                    state.filterSet.add(idx);
+                } else {
+                    if (state.filterSet.size === 1) {
+                        // Don't allow zero countries; bounce the click.
+                        cb.checked = true;
+                        return;
+                    }
+                    state.filterSet.delete(idx);
+                    if (state.focused === idx) state.focused = null;
+                }
+                state.focused = null;  // toggling filter clears drill-down
+                applyState();
+            });
+        });
+
+        // ---- Reset button: restore default 4-country view ----
+        var resetBtn = document.getElementById('t3-reset');
+        if (resetBtn) {
+            resetBtn.addEventListener('click', function () {
+                state.filterSet = new Set([0, 1, 2, 3]);
+                state.focused   = null;
+                document.querySelectorAll('.t3-filter input[type=checkbox]').forEach(function (cb) {
+                    cb.checked = true;
+                });
+                applyState();
+            });
+        }
+        // Initial state (N=4) already matches what cell 17 baked in — no need to applyState() now.
+    }
+    attach();
+})();
+</script>
+</body>
+</html>
